@@ -7,6 +7,7 @@ ser = serial.Serial('/dev/cu.usbserial-1420', 9600)  # port for servo communicat
 #resolution to shoot @260 fps
 width = 640
 height = 360
+last_sent = -100
 
 center_x = width / 2         # calculate center of frame(Xc,Yc)
 center_y = height / 2
@@ -18,9 +19,29 @@ cap.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
 cap.set(cv2.CAP_PROP_FPS, 300)
 
 # function to rotate servo. You firrst need to upload servo_control to uno
-def set_servo_angle(angle):                         
+def set_servo_angle(angle):
     ser.write((str(angle) + '\n').encode())
 
+
+def set_target(angle):
+
+    if angle < abs(85):
+        angle = 0 
+    if angle > abs(95):
+         angle = 180
+    target = linear_map(angle,0,180,0,800)
+
+    if abs(last_sent - target) > 50:
+        last_sent = target
+        ser.write((str(target) + '\n').encode())
+
+def linear_map(value, from_min, from_max, to_min, to_max):
+    # Calculate the percentage of value within the from range
+    ratio = (value - from_min) / (from_max - from_min)
+    
+    # Map the percentage to the to range
+    mapped_value = ratio * (to_max - to_min) + to_min
+    return mapped_value
 
 # function to calculate angle w/repsct to center of frame. this will work if servo is positioned right under camera center. 
 # else we would need to first find servo from frame and then do the angle with respect to servo
