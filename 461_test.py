@@ -2,13 +2,18 @@ import cv2
 import numpy as np
 import math
 import serial
-ser = serial.Serial('/dev/cu.usbserial-1420', 9600)  # port for servo communication
-
+import matplotlib.pyplot as plt
+import time
+# Open serial connection to Arduino
+ser = serial.Serial('COM4', 200000, timeout=0.1)
+time.sleep(1)  # Allow time for Arduino to reset
+ser.flushInput()  # Clear input buffer
 #resolution to shoot @260 fps
 width = 640
 height = 360
-last_sent = -100
 
+# Initialize last_sent variable
+last_sent = 0
 center_x = width / 2         # calculate center of frame(Xc,Yc)
 center_y = height / 2
 
@@ -19,29 +24,37 @@ cap.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
 cap.set(cv2.CAP_PROP_FPS, 300)
 
 # function to rotate servo. You firrst need to upload servo_control to uno
-def set_servo_angle(angle):
-    ser.write((str(angle) + '\n').encode())
+#def set_servo_angle(angle):
+   # ser.write((str(angle) + '\n').encode())
+target_gear=0
 
+def set_target(angle,last_sent,target_gear):
+    
+    if abs(angle) < 90:
+        target = 0 
+    elif abs(angle) >= 90:
+        target = 180
+    #target = linear_map(angle,0,180,0,800)
 
-def set_target(angle):
-
-    if angle < abs(85):
-        angle = 0 
-    if angle > abs(95):
-         angle = 180
-    target = linear_map(angle,0,180,0,800)
-
-    if abs(last_sent - target) > 50:
+    if abs(last_sent - target) > 70:
         last_sent = target
-        ser.write((str(target) + '\n').encode())
-
-def linear_map(value, from_min, from_max, to_min, to_max):
+        target_gear=target*(800/360)
+        print("target_gear",target_gear)
+        ser.write(f"{int(target_gear)}\n".encode())
+        #print(target)
+        return last_sent,target_gear
+    else:
+        target_gear=last_sent*(800/360)
+        print("target_gear else",target_gear)
+        ser.write(f"{int(target_gear)}\n".encode())
+        return last_sent,target_gear
+#def linear_map(value, from_min, from_max, to_min, to_max):
     # Calculate the percentage of value within the from range
-    ratio = (value - from_min) / (from_max - from_min)
+    #ratio = (value - from_min) / (from_max - from_min)
     
     # Map the percentage to the to range
-    mapped_value = ratio * (to_max - to_min) + to_min
-    return mapped_value
+    #mapped_value = ratio * (to_max - to_min) + to_min
+    #return mapped_value
 
 # function to calculate angle w/repsct to center of frame. this will work if servo is positioned right under camera center. 
 # else we would need to first find servo from frame and then do the angle with respect to servo
@@ -63,10 +76,13 @@ def center_moments(max_contour,radius):
 
 # Define color range of the ball in HSV. This lower and upper arrays works for the green tennis balls. Note: lighting affects HSV
 # use coloradjust.py to find appropriate HSV range
-lower_yellow = np.array([30, 65, 100])
-upper_yellow = np.array([60, 255, 255])
-
-while True:
+lower_yellow = np.array([15, 60, 165])
+upper_yellow = np.array([30, 255, 255])
+m=0
+data = {'target': [], 'pos': []}
+prev_pos=0
+for m in range(2000):
+    ts=time.time()
     ret, frame = cap.read()            # read frame, ret is a boolean. if false, frame is not read
     frame = cv2.flip(frame, 1)         # flip image so its nor mirrored. 
 
@@ -124,13 +140,41 @@ while True:
         cv2.putText(frame, angle_text, (10, 90), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
 
         # set servo to absolute value of angle. since sevo only does o to 180
-        set_servo_angle(abs(angle))
+        #set_servo_angle(abs(angle))
+        [last_sent,target_gear]=set_target(angle,last_sent,target_gear)
 
+            # Read position data
+    pos = ser.readline().decode().strip()
+    print(f"Position: {pos}")
+    #te=time.time()
+    #print(te-ts)
+        
+        # Check if pos is an empty string
+    if pos:
+        prev_pos=pos
+        data['target'].append(target_gear)
+        data['pos'].append(int(pos))
+        #print(1)
+    else:
+        # print(1)
+         print("Empty position signal received")
+         data['target'].append(target_gear)
+         data['pos'].append(int(prev_pos))
+    #time.sleep(1)
     # show final image
     cv2.imshow('Frame', frame)
     if cv2.waitKey(1) & 0xFF == ord('q'):  # stop showing image when q is pressed
             break
-    
+    m=m+1
 # Release the video capture and close all OpenCV windows
 cap.release()
 cv2.destroyAllWindows()
+
+# Plotting
+plt.plot(data['target'], label='Target')
+plt.plot(data['pos'], label='Position')
+plt.xlabel('Time')
+plt.ylabel('Value')
+plt.title('Target and Position Signals')
+plt.legend(loc='upper right')
+plt.show()
