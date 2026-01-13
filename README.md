@@ -15,6 +15,7 @@ The system must operate under real-time constraints, handle sensor noise and det
 
 ---
 
----
-## Setup 
+## Hardware Setup
+
+![RoboKeeper Setup](images/Hardware_setup.png)
 
