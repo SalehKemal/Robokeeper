@@ -15,5 +15,11 @@ Design and implement an autonomous robotic goalkeeper that:
 
 ## Hardware Setup
 
-![RoboKeeper Setup](images/Hardware_setup.png)
+<p align="center">
+  <img src="images/Hardware_setup.png" width="600">
+</p>
+
+<p align="center">
+  <em>Figure 1: Tabletop RoboKeeper hardware setup showing the camera, actuator, and goal region.</em>
+</p>
 
