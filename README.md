@@ -38,3 +38,24 @@ The webcam streams frames to the Python process, where HSV color filtering is us
 
 On the microcontroller, a PID controller regulates the motor position to track the commanded target angle, enabling fast and stable interception of incoming shots.
 
+## Requirements
+
+### Software
+- Python 3.x  
+- OpenCV (`cv2`)  
+- NumPy  
+- Matplotlib  
+- Arduino IDE  
+
+### Hardware
+- USB camera (~100 FPS recommended)  
+- DC motor  
+- Motor driver  
+- Arduino Uno  
+- Jumper wires  
+- Ping pong ball (target object)  
+- Tabletop field and goal frame / net  
+- 3D-printed goalie  
+- 3D-printed motor mount (for securing the motor)  
+- Rectifier (for motor driver power conditioning)
+
