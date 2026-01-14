@@ -59,3 +59,28 @@ On the microcontroller, a PID controller regulates the motor position to track t
 - 3D-printed motor mount (for securing the motor)  
 - Rectifier (for motor driver power conditioning)
 
+## Demo
+
+<p align="center">
+  <img src="images/Demo_vid_30_gif.gif" width="700">
+</p>
+
+<p align="center">
+  <em>RoboKeeper intercepting incoming shots in real time.</em>
+</p>
+
+---
+
+## Full Videos & Project Report
+
+### Project Video
+- Full experimental demonstration (Google Drive):  
+  https://drive.google.com/drive/u/1/folders/1uzplka4dZxbBwikLdM6qgB1QsYYVn0e
+
+### Project Report & Slides
+- **Project Report:**  
+  https://docs.google.com/document/d/1MkC1aidd55K4iyMSY5kiwpvNu3FIF6F0h_RNyExWs/edit?usp=sharing
+
+- **Slides:**  
+  https://docs.google.com/presentation/d/1fh9ue1M_8_9XWQy9-JK1InU17LAvPNkAuEvablz29g/edit?usp=sharing
+
