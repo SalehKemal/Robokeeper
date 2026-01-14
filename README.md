@@ -79,7 +79,7 @@ On the microcontroller, a PID controller regulates the motor position to track t
 
 ### Project Report & Slides
 - **Project Report:**  
-  [[https://docs.google.com/document/d/1MkC1aidd55K4iyMSY5kiwpvNu3FIF6F0h_RNyExWs/edit?usp=sharing](https://docs.google.com/document/d/1MKcIadid55K4IyM5MY5kiwpVNu3FFlF6F0h_RNyExWs/edit?usp=sharing)](https://docs.google.com/document/d/13RaCCt7X9L0syoJMb5IiYj2unm0OBDHEJllr3QrTJZc/edit?usp=sharing)
+  [https://docs.google.com/document/d/1MkC1aidd55K4iyMSY5kiwpvNu3FIF6F0h_RNyExWs/edit?usp=sharing](https://docs.google.com/document/d/13RaCCt7X9L0syoJMb5IiYj2unm0OBDHEJllr3QrTJZc/edit?usp=sharing)
 
 - **Slides:**  
   [https://docs.google.com/presentation/d/1fh9ue1M_8_9XWQy9-JK1InU17LAvPNkAuEvablz29g/edit?usp=sharing](https://docs.google.com/presentation/d/1fh9ueJlM_8_9XWqYq-JKLTnL1ZlAvPNkAuEvablz90g/edit?usp=sharing)
