@@ -23,3 +23,18 @@ Design and implement an autonomous robotic goalkeeper that:
   <em>Figure 1: Tabletop RoboKeeper hardware setup showing the camera, actuator, and goal region.</em>
 </p>
 
+## System Architecture 
+<p align="center">
+  <img src="images/Sys_Arc.png" width="750">
+</p>
+
+<p align="center">
+  <em>Figure 2: Software and hardware pipeline for real-time ball tracking and motor control.</em>
+</p>
+
+The system is split between a high-level perception and planning pipeline running in Python and a low-level control loop implemented on an Arduino microcontroller.
+
+The webcam streams frames to the Python process, where HSV color filtering is used to detect the ball. From the detected ball position, a target servo angle is computed corresponding to the predicted interception point at the goal plane. This target value is transmitted to the Arduino over a serial connection.
+
+On the microcontroller, a PID controller regulates the motor position to track the commanded target angle, enabling fast and stable interception of incoming shots.
+
