@@ -1,6 +1,5 @@
 # RoboKeeper ⚽🤖
-An autonomous tabletop robotic goalkeeper using computer vision and feedback control.
-
+RoboKeeper is an autonomous robotic goalkeeper system that uses real-time computer vision and PID control to intercept a moving ball on a tabletop setup.
 ---
 
 ## Problem Statement
